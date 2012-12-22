@@ -21,5 +21,41 @@ exports.tests = {
       script.run();
 
     });
+  },
+  'require() cannot be called from sandbox': function(finished, prefix) {
+    new SandCastle(function(err, sandcastle) {
+      var script = sandcastle.createScript("\
+        exports.main = function() {\
+          var net = require('net');\
+        }\
+      ")
+
+      script.on('exit', function(err, result) {
+        equal(err.message, 'require is not defined', prefix)
+        finished();
+      });
+
+      script.run();
+    });
+  },
+  'an API can be provided for untrusted JavaScript to interact with': function(finished, prefix) {
+    new SandCastle({
+      api: './examples/api.js'
+    }, function(err, sandcastle) {
+      var script = sandcastle.createScript("\
+        exports.main = function() {\
+          getFact(function(fact) {\
+            exit(fact);\
+          });\
+        }\
+      ")
+
+      script.on('exit', function(err, result) {
+        equal(result, 'The rain in spain falls mostly on the plain.', prefix)
+        finished();
+      });
+
+      script.run();
+    });
   }
 }
