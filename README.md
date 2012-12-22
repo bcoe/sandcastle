@@ -10,7 +10,7 @@ var sandcastle = new SandCastle({
     timeout: 2500
 })
 
-var script = sandcastle.execute("\
+var script = sandcastle.createScript("\
     exports.main = function() {\
         var result = 1 + 1;\
         exit({\
@@ -26,4 +26,6 @@ script.on('timeout', function(err) {
 script.on('exit', function(err, results) {
     console.log(results); // equals [2].
 });
+
+script.run();
 ```

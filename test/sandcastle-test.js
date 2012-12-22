@@ -3,8 +3,7 @@ var equal = require('assert').equal,
 
 
 exports.tests = {
-  'on("complete") is fired when a sandboxed script executes the complete method': function(finished, prefix) {    
-    equal(true, true, prefix);
-    finished();
+  'on("exit") is fired when a sandboxed script calls the exit method': function(finished, prefix) {    
+    var SandCastle = new SandCastle();
   }
 }
