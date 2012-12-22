@@ -1,0 +1,27 @@
+{
+  "name": "sandcastle",
+  "directories": {
+    "lib": "./lib",
+    "bin": "./bin"
+  },
+  "main": "./lib/index.js",
+  "bin": "./bin/sandcastle.js",
+  "version": "0.0.1",
+  "author": "Ben Coe <bencoe@gmail.com>",
+  "engines": [
+    "node"
+  ],
+  "description": "A simple and powerful sandbox for running untrusted JavaScript.",
+  "keywords": [
+    "sandbox"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bcoe/sandcastle.git"
+  },
+  "dependencies": {
+    "optimist": "0.3.4",
+    "underscore": ">=1.4.2",
+    "micro-test": "1.0.0"
+  }
+}
