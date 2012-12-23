@@ -17,13 +17,13 @@ var stats = {
 var script1 = sandcastle.createScript("\
   exports.main = function() {\
     setTimeout(function() {\
-      exit('script1 complete')\
+      exit('script1')\
     }, 250)\
   }\
 ");
 
 script1.on('exit', function(err, output) {
-  stats.script1 += 1;
+  stats[output] += 1;
 });
 
 script1.on('timeout', function() {
@@ -33,25 +33,25 @@ script1.on('timeout', function() {
 // a malicious script that loops infinitely.
 var script2 = sandcastle.createScript("\
   exports.main = function() {\
-    while(true) {};\
+    while('script2') {};\
   }\
 ");
 
 script2.on('exit', function(err, output) {
-  stats.script2 += 1;
+  stats[output] += 1;
 });
 
 // A non-malicious script with a timeout.
 var script3 = sandcastle.createScript("\
   exports.main = function() {\
     setTimeout(function() {\
-      exit('script3 complete')\
+      exit('script3')\
     }, 500)\
   }\
 ");
 
 script3.on('exit', function(err, output) {
-  stats.script3 += 1;
+  stats[output] += 1;
 });
 
 script3.on('timeout', function() {
