@@ -27,6 +27,7 @@ script1.on('exit', function(err, output) {
 });
 
 script1.on('timeout', function() {
+  // reschedule script1 when it times out.
   script1.run();
 });
 
@@ -55,6 +56,9 @@ script3.on('exit', function(err, output) {
 });
 
 script3.on('timeout', function() {
+
+  // reschedule script3 when it times out.
+
   script3.removeAllListeners('exit');
   script3.on('exit', function(err, output) {
     stats.script3 += 1;
@@ -80,12 +84,14 @@ var id = setInterval(function() {
   if (script1.exited && script3.exited) {
     clearInterval(id);
 
-    // both script1 and script 2 exited. after their first execution.
+    // both script1 and script 2 exited after their first execution.
     // next we will schedule them with a malicious script.
 
     script3.run();
     script1.run();
-    // script2 is malicious and will cause the sandbox to shutdown'
+    // script2 is malicious and will cause the sandbox to shutdown
+    // script1 and script3's timeout methods however cause them to be
+    // rescheduled.
     script2.run();
   }
 }, 1000);
