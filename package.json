@@ -7,7 +7,7 @@
   "main": "./lib/index.js",
   "bin": "./bin/sandcastle.js",
   "version": "0.0.1",
-  "author": "Ben Coe <bencoe@gmail.com>",
+  "author": "Ben Coe <bencoe@gmail.com>, Gabe Silk <gabesilk@gmail.com>",
   "engines": [
     "node"
   ],
@@ -23,5 +23,8 @@
     "optimist": "0.3.4",
     "underscore": ">=1.4.2",
     "micro-test": "1.0.0"
+  },
+  "optionalDependencies": {
+    "posix": "0.0.10"
   }
 }
