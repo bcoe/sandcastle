@@ -23,8 +23,5 @@
     "optimist": "0.3.4",
     "underscore": ">=1.4.2",
     "micro-test": "1.0.0"
-  },
-  "optionalDependencies": {
-    "posix": "0.0.10"
   }
 }

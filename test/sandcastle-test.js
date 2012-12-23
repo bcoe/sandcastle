@@ -106,26 +106,5 @@ exports.tests = {
       finished();
     });
     script.run();
-  },
-  /*'script should be terminated if it takes up too much memory': function(finished, prefix) {
-    var sandcastle = new SandCastle({
-      timeout: 20000
-    });
-
-    var script = sandcastle.createScript("\
-      exports.main = function() {\
-        var data = '';\
-        for (var i = 0; i < 1048576; i++) {\
-          data += 'B';\
-        };\
-      }\
-    ");
-
-    script.on('timeout', function(err, result) {
-      sandcastle.kill();
-      finished();
-    });
-
-    script.run();
-  }*/
+  }
 }

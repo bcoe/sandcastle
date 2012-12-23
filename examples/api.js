@@ -6,5 +6,8 @@ exports.api = {
       if (err) throw err;
       callback(data.toString());
     });
+  },
+  setTimeout: function(callback, timeout) {
+    setTimeout(callback, timeout);
   }
 }

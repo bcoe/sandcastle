@@ -6,11 +6,10 @@ var sandcastle = require('../lib'),
 
 switch (mode) {
   case 'sandbox':
-    var sandbox = new sandcastle.Sandbox({
-
-    });
-    sandbox.start();
+    (new sandcastle.Sandbox()).start();
     break;
   default:
-    console.log('Usage sandcastle <command>\n\n')
+    console.log('Usage sandcastle <command>\n\n\
+      \t<sandbox>\tstart a sandbox server\n\
+    ')
 }
