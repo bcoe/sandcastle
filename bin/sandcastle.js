@@ -6,10 +6,13 @@ var sandcastle = require('../lib'),
 
 switch (mode) {
   case 'sandbox':
-    (new sandcastle.Sandbox()).start();
+    (new sandcastle.Sandbox({
+        socket: (argv.socket || '/tmp/sandcastle.sock')
+    })).start();
     break;
   default:
     console.log('Usage sandcastle <command>\n\n\
       \t<sandbox>\tstart a sandbox server\n\
+      \t\t--socket=[path to socket file]\n\
     ')
 }
