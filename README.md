@@ -50,9 +50,9 @@ __Outputs__
 
 ```
 
-* __exit():__ causes a sandboxed script to return.
-  * Any JSON serializable data passed into __exit()__, will be returned in the output parameter of an __exit__ event.
-* __on('exit'):__ on exit is called when an untrusted script finishes executing.
+* __exit(output):__ causes a sandboxed script to return.
+  * Any JSON serializable data passed into __exit()__ will be returned in the output parameter of an __exit__ event.
+* __on('exit'):__ on exit is called when an untrusted script finishes.
 
 Handling Timeouts
 -----------------------
