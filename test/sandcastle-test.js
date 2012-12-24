@@ -22,6 +22,23 @@ exports.tests = {
 
     script.run();
   },
+  'run() can have global variables passed into it': function(finished, prefix) {
+    var sandcastle = new SandCastle();
+
+    var script = sandcastle.createScript("\
+      exports.main = function() {\
+        exit(foo);\
+      }\
+    ");
+
+    script.on('exit', function(err, result) {
+      equal('bar', result, prefix)
+      sandcastle.kill();
+      finished();
+    });
+
+    script.run({foo: 'bar'});
+  },
   'require() cannot be called from sandbox': function(finished, prefix) {
     var sandcastle = new SandCastle();
 
