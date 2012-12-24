@@ -20,7 +20,7 @@ What Makes SandCastle different?
 ---------------------
 
 * It allows you to queue up multiple scripts for execution within a single sandbox.
-** This better suits Node's evented architecture.
+  * This better suits Node's evented architecture.
 * It provides reasonable stack traces when the execution of a sandboxed script fails.
 * It allows an API to be provided to the sandboxed script being executed.
 * It provides all this in a simple, unit-tested, API.
@@ -51,7 +51,7 @@ __Outputs__
 ```
 
 * __exit():__ causes a sandboxed script to return.
-** Any JSON serializable data passed into __exit()__, will be returned in the output parameter of an __exit__ event.
+  * Any JSON serializable data passed into __exit()__, will be returned in the output parameter of an __exit__ event.
 * __on('exit'):__ on exit is called when an untrusted script finishes executing.
 
 Handling Timeouts
