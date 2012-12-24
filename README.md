@@ -42,7 +42,7 @@ var sandcastle = new SandCastle();
 
 var script = sandcastle.createScript("\
   exports.main = function() {\
-    exit('Hello World!');\
+    exit('Hey ' + name + ' Hello World!');\
   }\
 ");
 
@@ -50,13 +50,13 @@ script.on('exit', function(err, output) {
     console.log(output); // Hello World!
 });
 
-script.run();
+script.run({name: 'Ben'});// we can pass variables into run.
 ```
 
 __Outputs__
 
 ```bash
-Hello World!
+Hey Ben Hello World!
 ```
 
 * __exit(output):__ from within untrusted code, causes a sandboxed script to return.
