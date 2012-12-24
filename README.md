@@ -85,27 +85,48 @@ script.on('timeout', function() {
 script.run();
 ```
 
+__Outputs__
+
+```bash
+I timed out, oh what a silly script I am!
+```
+
 Handling Errors
 -----------------------
 
 If an exception occurs while executing a script, it will be returned as the first parameter in an __on(exit)__ event.
 
 ```bash
-var SandCastle = require('sandcastle').SandCastle,;
+var SandCastle = require('sandcastle').SandCastle;
 
 var sandcastle = new SandCastle();
 
 var script = sandcastle.createScript("\
-  exports.main = function() {\
-    require('fs');\
+  exports.main = function() {\n\
+    require('fs');\n\
   }\
 ");
 
 script.on('exit', function(err, output) {
-    console.log(err); // Hello World!
+    console.log(err.message);
+    console.log(err.stack);
 });
 
 script.run();
+```
+
+__Outputs__
+
+```bash
+require is not defined
+ReferenceError: require is not defined
+    at Object.main ([object Context]:2:5)
+    at [object Context]:4:9
+    at Sandbox.executeScript (/Users/bcoe/hacking/open-source/sandcastle/lib/sandbox.js:58:8)
+    at Socket.<anonymous> (/Users/bcoe/hacking/open-source/sandcastle/lib/sandbox.js:16:13)
+    at Socket.emit (events.js:64:17)
+    at Socket._onReadable (net.js:678:14)
+    at IOWatcher.onReadable [as callback] (net.js:177:10)
 ```
 
 Providing an API
