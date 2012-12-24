@@ -184,7 +184,7 @@ script.on('exit', function(err, result) {
 script.run();
 ```
 
-SandCastle will be an ongoing project, please be liberal with your feedback, criticisms, and contributions.
+SandCastle will be an ongoing project, please be liberal with your feedback, criticism, and contributions.
 
 Copyright
 ---------
