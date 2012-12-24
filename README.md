@@ -49,7 +49,7 @@ script.run();
 __Outputs__
 
 ```bash
-
+Hello World!
 ```
 
 * __exit(output):__ causes a sandboxed script to return.
@@ -64,7 +64,7 @@ If a script takes too long to execute, a timeout event will be fired:
 
 
 ```javascript
-var SandCastle = require('sandcastle').SandCastle,;
+var SandCastle = require('sandcastle').SandCastle;
 
 var sandcastle = new SandCastle();
 
