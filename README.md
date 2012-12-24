@@ -11,19 +11,26 @@ For a project I'm working on, I needed the ability to run untrusted JavaScript c
 I had a couple specific requirements:
 
 * I wanted the ability to whitelist an API for inclusion within the sandbox.
-* I wanted to be able to run multiple untrusted scripts in the same sandboxed subprocess:
+* I wanted to be able to run multiple untrusted scripts in the same sandboxed subprocess.
 * I wanted good error reporting and stack-traces, when a sandboxed script failed.
 
 I could not find a library that met all these requirements, enter SandCastle.
 
-What Makes SandCastle different?
+What Makes SandCastle Different?
 ---------------------
 
 * It allows you to queue up multiple scripts for execution within a single sandbox.
   * This better suits Node's evented architecture.
 * It provides reasonable stack traces when the execution of a sandboxed script fails.
 * It allows an API to be provided to the sandboxed script being executed.
-* It provides all this in a simple, unit-tested, API.
+* It provides all this in a simple, well-tested, API.
+
+Installation
+------------
+
+```bash
+npm install sandcastle
+```
 
 Creating and Executing a Script
 ----------------------
@@ -52,16 +59,15 @@ __Outputs__
 Hello World!
 ```
 
-* __exit(output):__ causes a sandboxed script to return.
-  * Any JSON serializable data passed into __exit()__ will be returned in the output parameter of an __exit__ event.
-* __on('exit'):__ on exit is called when an untrusted script finishes.
-* __run()__ execute a script.
+* __exit(output):__ from within untrusted code, causes a sandboxed script to return.
+  * Any JSON serializable data passed into __exit()__ will be passed to the output parameter of an __exit__ event.
+* __on('exit'):__ this event is called when an untrusted script finishes execution.
+* __run()__ starts the execution of an untrusted script.
 
 Handling Timeouts
 -----------------------
 
 If a script takes too long to execute, a timeout event will be fired:
-
 
 ```javascript
 var SandCastle = require('sandcastle').SandCastle;
@@ -154,7 +160,9 @@ exports.api = {
 
 __A Script Using the API:__
 
-```
+```javascript
+var SandCastle = require('sandcastle').SandCastle;
+
 var sandcastle = new SandCastle({
   api: './examples/api.js'
 });
