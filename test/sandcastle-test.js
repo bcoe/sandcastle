@@ -77,6 +77,27 @@ exports.tests = {
 
     script.run();
   },
+  'an API can be provided for untrusted JavaScript to interact with along with per-script API code': function(finished, prefix) {
+    var sandcastle = new SandCastle({
+      api: './examples/api.js'
+    });
+
+    var script = sandcastle.createScript("\
+      exports.main = function() {\
+        callAdditional(function(fact) {\
+          exit(fact);\
+        });\
+      }\
+    ", "function anotherFunction(cb) { cb('The reign in spane falls mostly on the plain') }");
+
+    script.on('exit', function(err, result) {
+      equal(result, 'The reign in spane falls mostly on the plain', prefix);
+      sandcastle.kill();
+      finished();
+    });
+
+    script.run();
+  },
   'looping script should cause timeout event to be called and sandbox to respawn': function(finished, prefix) {
     var sandcastle = new SandCastle({
       api: './examples/api.js',
