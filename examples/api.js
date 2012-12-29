@@ -9,5 +9,8 @@ exports.api = {
   },
   setTimeout: function(callback, timeout) {
     setTimeout(callback, timeout);
+  },
+  callAdditional: function(callback) {
+    anotherFunction(callback)
   }
 }
