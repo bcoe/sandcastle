@@ -88,7 +88,7 @@ exports.tests = {
           exit(fact);\
         });\
       }\
-    ", "function anotherFunction(cb) { cb('The reign in spane falls mostly on the plain') }");
+    ", {extraAPI: "function anotherFunction(cb) { cb('The reign in spane falls mostly on the plain') }" });
 
     script.on('exit', function(err, result) {
       equal(result, 'The reign in spane falls mostly on the plain', prefix);
