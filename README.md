@@ -36,7 +36,7 @@ Creating and Executing a Script
 ----------------------
 
 ```javascript
-var SandCastle = require('sandcastle').SandCastle,;
+var SandCastle = require('sandcastle').SandCastle;
 
 var sandcastle = new SandCastle();
 
