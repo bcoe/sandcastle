@@ -6,7 +6,7 @@
   },
   "main": "./lib/index.js",
   "bin": "./bin/sandcastle.js",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "author": "Ben Coe <bencoe@gmail.com>, Gabe Silk <gabesilk@gmail.com>, Joshua Hull <joshbuddy@gmail.com>",
   "engines": [
     "node"
