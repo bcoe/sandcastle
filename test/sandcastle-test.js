@@ -1,4 +1,5 @@
 var equal = require('assert').equal,
+    notEqual = require('assert').notEqual,
   SandCastle = require('../lib').SandCastle;
 
 exports.tests = {
