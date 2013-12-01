@@ -172,7 +172,7 @@ exports.tests = {
   },
   'sandbox pool should run scripts on non blocking instances': function(finished, prefix) {    
     var pool = new Pool({numberOfInstances: 2});
-    
+    var exited = false;
     // Create blocking script.
     var script = pool.createScript("\
         exports.main = function() {\n\
@@ -195,12 +195,17 @@ exports.tests = {
         scriptsExited++;
         if(scriptsExited == 10) {
           pool.shutdown();
+          exited = true;
           finished();
         }
       });
       script2.run();
     }
-    setTimeout(function(){ equal(false, true, prefix); }, 3000);
+    setTimeout(function(){ 
+      if(!exited) {
+        equal(false, true, prefix); 
+      }
+    }, 3000);
   },
   'do not create a pool, if there are zero or negative amount of specified instances': function(finished, prefix) {    
     var pool = null;
