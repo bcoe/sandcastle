@@ -144,5 +144,23 @@ exports.tests = {
       finished();
     });
     script.run();
-  }
+  },
+  'enforce js-strict mode, when running scripts': function(finished, prefix) {    
+    var sandcastle = new SandCastle({useStrictMode: true});
+
+    var script = sandcastle.createScript("\
+        exports.main = function() {\n\
+          globalObjectAccidentalPollution = true; \
+          exit(0); \
+        }\n\
+      "
+    );
+
+    script.on('exit', function(err, result) {
+      notEqual(-1, err.toString().indexOf("globalObjectAccidentalPollution is not defined"), prefix);
+      sandcastle.kill();
+      finished();
+    });
+    script.run();
+  },
 }
