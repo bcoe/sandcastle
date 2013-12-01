@@ -202,15 +202,14 @@ exports.tests = {
     }
     setTimeout(function(){ equal(false, true, prefix); }, 3000);
   },
-  'do not create a pool, if there are zero or negative amount of instances': function(finished, prefix) {    
+  'do not create a pool, if there are zero or negative amount of specified instances': function(finished, prefix) {    
     var pool = null;
     try {
-      pool = new Pool({numberOfInstances: 0});   
+      pool = new Pool({numberOfInstances: 0});
+      equal(false, true, prefix);
     } catch (error) {
       notEqual(-1, error.indexOf("Can't create a pool with zero instances"), prefix);
       finished();
     }
-    equal(false, true, prefix);
   },
-
 }
