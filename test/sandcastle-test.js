@@ -1,7 +1,7 @@
 var equal = require('assert').equal,
   notEqual = require('assert').notEqual,
   SandCastle = require('../lib').SandCastle,
-  Pool = require('../lib').Pool
+  Pool = require('../lib').Pool;
 
 exports.tests = {
   'on("exit") is fired when a sandboxed script calls the exit method': function(finished, prefix) {
