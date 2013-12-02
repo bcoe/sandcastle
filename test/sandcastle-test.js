@@ -163,7 +163,7 @@ exports.tests = {
         equal(10, result, prefix);
         scriptsExited++;
         if(scriptsExited == 10) {
-          pool.shutdown();
+          pool.kill();
           finished();
         }
       });
@@ -194,7 +194,7 @@ exports.tests = {
         equal(10, result, prefix);
         scriptsExited++;
         if(scriptsExited == 10) {
-          pool.shutdown();
+          pool.kill();
           exited = true;
           finished();
         }
