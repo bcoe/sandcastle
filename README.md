@@ -64,6 +64,29 @@ Hey Ben Hello World!
 * __on('exit'):__ this event is called when an untrusted script finishes execution.
 * __run()__ starts the execution of an untrusted script.
 
+Executing Scripts on Pool of SandCastles
+----------------------
+A pool consists of several SandCastle child-processes, which will handle the script execution. Pool-object is a drop-in replacement of single Sandcastle instance. Only difference is, when creating the Pool-instance. 
+
+You can specify the amount of child-processes with parameter named numberOfInstances (default = 1).
+```javascript
+var Pool = require('sandcastle').Pool;
+
+var poolOfSandcastles = new Pool( { numberOfInstances: 3 } );
+
+var script = poolOfSandcastles.createScript("\
+  exports.main = function() {\
+    exit('Hello World!');\
+  }\
+");
+
+script.on('exit', function(err, output) {
+    console.log(output);
+});
+
+script.run();
+```
+
 Handling Timeouts
 -----------------------
 
