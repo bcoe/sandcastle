@@ -1,7 +1,8 @@
 var equal = require('assert').equal,
   notEqual = require('assert').notEqual,
   SandCastle = require('../lib').SandCastle,
-  Pool = require('../lib').Pool;
+  Pool = require('../lib').Pool,
+  path = require('path');
 
 
 exports.tests = {
@@ -189,6 +190,28 @@ exports.tests = {
       sandcastle.kill();
       finished();
     });
+    script.run();
+  },
+  'cwd is set, when running scripts': function(finished, prefix) {
+    var cwd = process.cwd() + '/test';
+
+    var sandcastle = new SandCastle({
+      api: '../examples/api.js',
+      cwd: cwd
+    });
+
+    var script = sandcastle.createScript("\
+      exports.main = function() {\
+        exit({ cwd: cwd() });\
+      }\
+    ");
+
+    script.on('exit', function(err, result) {
+      equal(cwd, result.cwd, prefix);
+      sandcastle.kill();
+      finished();
+    });
+
     script.run();
   },
   'sandbox pool should run multiple scripts': function(finished, prefix) {    
