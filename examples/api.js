@@ -12,5 +12,8 @@ exports.api = {
   },
   callAdditional: function(callback) {
     anotherFunction(callback)
+  },
+  cwd: function() {
+    return process.cwd();
   }
 }
