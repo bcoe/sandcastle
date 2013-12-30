@@ -4,8 +4,8 @@ var equal = require('assert').equal,
   Pool = require('../lib').Pool;
 
 
-exports.tests = {
-  'on("exit") is fired when a sandboxed script calls the exit method': function(finished, prefix) {
+describe('Sandcastle', function () {
+  it('should fire on("exit") when a sandboxed script calls the exit method', function (finished) {
     var sandcastle = new SandCastle();
 
     var script = sandcastle.createScript("\
@@ -17,15 +17,16 @@ exports.tests = {
       }\
     ");
 
-    script.on('exit', function(err, result) {
-      equal(result.results[0], 2, prefix)
+    script.on('exit', function (err, result) {
+      equal(result.results[0], 2)
       sandcastle.kill();
       finished();
     });
 
     script.run();
-  },
-  'run() can have global variables passed into it': function(finished, prefix) {
+  });
+
+  it('should pass global variables to run()', function (finished) {
     var sandcastle = new SandCastle();
 
     var script = sandcastle.createScript("\
@@ -34,15 +35,16 @@ exports.tests = {
       }\
     ");
 
-    script.on('exit', function(err, result) {
-      equal('bar', result, prefix)
+    script.on('exit', function (err, result) {
+      equal('bar', result)
       sandcastle.kill();
       finished();
     });
 
     script.run({foo: 'bar'});
-  },
-  'require() cannot be called from sandbox': function(finished, prefix) {
+  });
+
+  it('should not allow require() to be called', function (finished) {
     var sandcastle = new SandCastle();
 
     var script = sandcastle.createScript("\
@@ -51,15 +53,16 @@ exports.tests = {
       }\
     ");
 
-    script.on('exit', function(err, result) {
-      equal(err.message, 'require is not defined', prefix);
+    script.on('exit', function (err, result) {
+      equal(err.message, 'require is not defined');
       sandcastle.kill();
       finished();
     });
 
     script.run();
-  },
-  'an API can be provided for untrusted JavaScript to interact with': function(finished, prefix) {
+  });
+
+  it('should provide an API', function (finished) {
     var sandcastle = new SandCastle({
       api: './examples/api.js'
     });
@@ -72,15 +75,17 @@ exports.tests = {
       }\
     ");
 
-    script.on('exit', function(err, result) {
-      equal(result, 'The rain in spain falls mostly on the plain.', prefix);
+    script.on('exit', function (err, result) {
+      equal(result, 'The rain in spain falls mostly on the plain.');
       sandcastle.kill();
       finished();
     });
 
     script.run();
-  },
-  'an API can be provided for untrusted JavaScript to interact with along with per-script API code': function(finished, prefix) {
+  });
+
+
+  it('should provide an API and a per-script API', function (finished) {
     var sandcastle = new SandCastle({
       api: './examples/api.js'
     });
@@ -93,15 +98,18 @@ exports.tests = {
       }\
     ", {extraAPI: "function anotherFunction(cb) { cb('The reign in spane falls mostly on the plain') }" });
 
-    script.on('exit', function(err, result) {
-      equal(result, 'The reign in spane falls mostly on the plain', prefix);
+    script.on('exit', function (err, result) {
+      equal(result, 'The reign in spane falls mostly on the plain');
       sandcastle.kill();
       finished();
     });
 
     script.run();
-  },
-  'looping script should cause timeout event to be called and sandbox to respawn': function(finished, prefix) {
+  });
+
+  it('should timeout and respawn when looping script runs', function (finished) {
+    this.timeout(10000);
+
     var sandcastle = new SandCastle({
       api: './examples/api.js',
       timeout: 2000
@@ -119,19 +127,20 @@ exports.tests = {
       }\
     ");
 
-    safeScript.on('exit', function(err, result) {
-      equal(result, 'banana', prefix);
+    safeScript.on('exit', function (err, result) {
+      equal(result, 'banana');
       sandcastle.kill();
       finished();
     });
 
-    loopingScript.on('timeout', function() {
+    loopingScript.on('timeout', function () {
       safeScript.run();
     });
 
     loopingScript.run();
-  },
-  'sandbox should return a human readable stacktrace': function(finished, prefix) {
+  });
+
+  it('should return a human readable stacktrace', function (finished) {
     var sandcastle = new SandCastle();
 
     var script = sandcastle.createScript("\
@@ -141,14 +150,18 @@ exports.tests = {
       "
     );
 
-    script.on('exit', function(err, result) {
-      equal(err.stack.indexOf('2:21') > -1, true, prefix);
+    script.on('exit', function (err, result) {
+      equal(err.stack.indexOf('2:21') > -1, true);
       sandcastle.kill();
       finished();
     });
     script.run();
-  },
-  'enforce memory limit, when running scripts': function(finished, prefix) {    
+  });
+
+
+  it('should enforce memory limit', function (finished) {
+    this.timeout(10000);
+
     var sandcastle = new SandCastle({memoryLimitMB: 10});
 
     var script = sandcastle.createScript("\
@@ -162,18 +175,19 @@ exports.tests = {
       "
     );
 
-    script.on('exit', function(err, result) {
+    script.on('exit', function (err, result) {
       // Should not go here.
-      equal(false, true, prefix);
+      equal(false, true);
     });
 
-    script.on('timeout', function(err, result) {
+    script.on('timeout', function (err, result) {
       sandcastle.kill();
       finished();
     });
     script.run();
-  },
-  'enforce js-strict mode, when running scripts': function(finished, prefix) {    
+  });
+
+  it('should enforce js-strict mode', function (finished) {
     var sandcastle = new SandCastle({useStrictMode: true});
 
     var script = sandcastle.createScript("\
@@ -184,81 +198,12 @@ exports.tests = {
       "
     );
 
-    script.on('exit', function(err, result) {
-      notEqual(-1, err.toString().indexOf("globalObjectAccidentalPollution is not defined"), prefix);
+    script.on('exit', function (err, result) {
+      notEqual(-1, err.toString().indexOf("globalObjectAccidentalPollution is not defined"));
       sandcastle.kill();
       finished();
     });
     script.run();
-  },
-  'sandbox pool should run multiple scripts': function(finished, prefix) {    
-    var pool = new Pool({numberOfInstances: 5});
+  });
 
-    var scriptsExited = 0;
-
-    for(var i = 0; i < 20; ++i) {
-      var script = pool.createScript("\
-          exports.main = function() {\n\
-            exit(testGlobal);\n\
-          }\n\
-        "
-      );
-      script.on('exit', function(err, result) {
-        equal(10, result, prefix);
-        scriptsExited++;
-        if(scriptsExited == 10) {
-          pool.kill();
-          finished();
-        }
-      });
-      script.run({testGlobal: 10});
-    }
-  },
-  'sandbox pool should run scripts on non blocking instances': function(finished, prefix) {    
-    var pool = new Pool({numberOfInstances: 2});
-    var exited = false;
-    // Create blocking script.
-    var script = pool.createScript("\
-        exports.main = function() {\n\
-          while(true);\
-        }\n\
-      "
-    );
-    script.run();
-
-    var scriptsExited = 0;
-    for(var i = 0; i < 10; ++i) {
-      var script2 = pool.createScript("\
-          exports.main = function() {\n\
-            exit(10);\n\
-          }\n\
-        "
-      );
-      script2.on('exit', function(err, result) {
-        equal(10, result, prefix);
-        scriptsExited++;
-        if(scriptsExited == 10) {
-          pool.kill();
-          exited = true;
-          finished();
-        }
-      });
-      script2.run();
-    }
-    setTimeout(function(){ 
-      if(!exited) {
-        equal(false, true, prefix); 
-      }
-    }, 3000);
-  },
-  'do not create a pool, if there are zero or negative amount of specified instances': function(finished, prefix) {    
-    var pool = null;
-    try {
-      pool = new Pool({numberOfInstances: 0});
-      equal(false, true, prefix);
-    } catch (error) {
-      notEqual(-1, error.indexOf("Can't create a pool with zero instances"), prefix);
-      finished();
-    }
-  }
-}
+});
