@@ -1,7 +1,8 @@
 var equal = require('assert').equal,
   notEqual = require('assert').notEqual,
   SandCastle = require('../lib').SandCastle,
-  Pool = require('../lib').Pool;
+  Pool = require('../lib').Pool,
+  path = require('path');
 
 
 exports.tests = {
@@ -195,7 +196,7 @@ exports.tests = {
     var cwd = process.cwd() + '/test';
 
     var sandcastle = new SandCastle({
-      api: './examples/api.js',
+      api: '../examples/api.js',
       cwd: cwd
     });
 
