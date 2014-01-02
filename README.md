@@ -1,7 +1,7 @@
 SandCastle
 ==========
 
-A simple and powerful sandbox for running untrusted JavaScript.
+A broken sandbox which cannot safely run untrusted JavaScript.
 
 The Impetus
 -----------
@@ -66,7 +66,7 @@ Hey Ben Hello World!
 
 Executing Scripts on Pool of SandCastles
 ----------------------
-A pool consists of several SandCastle child-processes, which will handle the script execution. Pool-object is a drop-in replacement of single Sandcastle instance. Only difference is, when creating the Pool-instance. 
+A pool consists of several SandCastle child-processes, which will handle the script execution. Pool-object is a drop-in replacement of single Sandcastle instance. Only difference is, when creating the Pool-instance.
 
 You can specify the amount of child-processes with parameter named numberOfInstances (default = 1).
 ```javascript
