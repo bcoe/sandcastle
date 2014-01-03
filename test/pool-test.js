@@ -77,5 +77,4 @@ describe('Pool', function () {
     }
   });
 
-
 });
