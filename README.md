@@ -209,6 +209,12 @@ script.run();
 
 SandCastle will be an ongoing project, please be liberal with your feedback, criticism, and contributions.
 
+Testing
+---------
+
+Run the test suite with `npm test`.
+
+
 Copyright
 ---------
 

@@ -19,10 +19,15 @@
     "type": "git",
     "url": "git://github.com/bcoe/sandcastle.git"
   },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha test/* --reporter spec --colors"
+  },
   "dependencies": {
     "bufferstream": ">=0.6.x",
     "optimist": "0.3.4",
-    "underscore": ">=1.4.2",
-    "micro-test": "1.0.0"
+    "underscore": ">=1.4.2"
+  },
+  "devDependencies": {
+    "mocha": ">= 1.7.x"
   }
 }
