@@ -1,8 +1,8 @@
 var equal = require('assert').equal,
   notEqual = require('assert').notEqual,
   SandCastle = require('../lib').SandCastle,
-  Pool = require('../lib').Pool;
-
+  Pool = require('../lib').Pool,
+  path = require('path');
 
 describe('Sandcastle', function () {
   it('should fire on("exit") when a sandboxed script calls the exit method', function (finished) {
@@ -84,7 +84,6 @@ describe('Sandcastle', function () {
     script.run();
   });
 
-
   it('should provide an API and a per-script API', function (finished) {
     var sandcastle = new SandCastle({
       api: './examples/api.js'
@@ -158,7 +157,6 @@ describe('Sandcastle', function () {
     script.run();
   });
 
-
   it('should enforce memory limit', function (finished) {
     this.timeout(10000);
 
@@ -203,6 +201,29 @@ describe('Sandcastle', function () {
       sandcastle.kill();
       finished();
     });
+    script.run();
+  });
+
+  it('sets cwd, when running scripts', function(finished) {
+    var cwd = process.cwd() + '/test';
+
+    var sandcastle = new SandCastle({
+      api: '../examples/api.js',
+      cwd: cwd
+    });
+
+    var script = sandcastle.createScript("\
+      exports.main = function() {\
+        exit({ cwd: cwd() });\
+      }\
+    ");
+
+    script.on('exit', function(err, result) {
+      equal(cwd, result.cwd);
+      sandcastle.kill();
+      finished();
+    });
+
     script.run();
   });
 

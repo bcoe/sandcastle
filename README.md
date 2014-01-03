@@ -64,6 +64,20 @@ Hey Ben Hello World!
 * __on('exit'):__ this event is called when an untrusted script finishes execution.
 * __run()__ starts the execution of an untrusted script.
 
+
+SandCastle Options
+----------------------
+
+The following options may be passed to the SandCastle constructor:
+
+* `timeout` &mdash; number of milliseconds to allow script to run (defaults to 5000 ms)
+* `memoryLimitMB` &mdash; maximum amount of memory that a script may consume  (defaults to 0)
+* `useStrictMode` &mdash; boolean; when true script runs in strict mode (defaults to false)
+* `api` &mdash; path to file that defines the API accessible to script
+* `cwd` &mdash; path to the current working directory that the script will be run in (defaults to `process.cwd()`)
+
+
+
 Executing Scripts on Pool of SandCastles
 ----------------------
 A pool consists of several SandCastle child-processes, which will handle the script execution. Pool-object is a drop-in replacement of single Sandcastle instance. Only difference is, when creating the Pool-instance. 
@@ -72,7 +86,7 @@ You can specify the amount of child-processes with parameter named numberOfInsta
 ```javascript
 var Pool = require('sandcastle').Pool;
 
-var poolOfSandcastles = new Pool( { numberOfInstances: 3 } );
+var poolOfSandcastles = new Pool( { numberOfInstances: 3 }, { timeout: 6000 } );
 
 var script = poolOfSandcastles.createScript("\
   exports.main = function() {\
@@ -95,7 +109,7 @@ If a script takes too long to execute, a timeout event will be fired:
 ```javascript
 var SandCastle = require('sandcastle').SandCastle;
 
-var sandcastle = new SandCastle();
+var sandcastle = new SandCastle({ timeout: 6000 });
 
 var script = sandcastle.createScript("\
   exports.main = function() {\
