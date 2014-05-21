@@ -177,7 +177,7 @@ Providing an API
 
 When creating an instance of SandCastle, you can provide an API. Functions within this API will be available inside of the untrustred scripts being executed.
 
-__AN Example of an API:__
+__An Example of an API:__
 
 ```javascript
 var fs = require('fs');
@@ -219,6 +219,97 @@ script.on('exit', function(err, result) {
 });
 
 script.run();
+```
+
+Run functions independently
+------------------------
+
+To call functions independently you can create a script file (which follows the module pattern) and run them separately.
+_Notice that one extra parameter `methodName` is available within the callback functions._
+
+```javascript
+var SandCastle = require('sandcastle').SandCastle;
+
+var sandcastle = new SandCastle();
+
+var script = sandcastle.createScript("\
+  exports.main = {\
+  	foo: function() {\
+      exit('Hello Foo!');\
+    },\
+    bar: function() {\
+      exit('Hello Bar!');\
+    }\,
+    hello: function() {\
+      exit('Hey ' + name + ' Hello World!');\
+    }\
+  }\
+");
+
+script.on('timeout', function(methodName) {
+	console.log(methodName);
+});
+
+script.on('exit', function(err, output, methodName) {
+	console.log(methodName); // main.foo, main.bar, main.hello
+});
+
+script.run('main.foo'); // Hello Foo!
+script.run('main.bar'); // Hello Bar!
+script.run('main.hello', {name: 'Ben'}); // Hey, Ben Hello World!
+```
+
+As all functions belong to the same script you can pass objects to the __same API instance__ and receive them later.
+
+__State API:__
+
+```javascript
+var state = {};
+
+exports.api = {
+  getState: function(key) {
+    return state[key];
+  },
+  setState: function(key, value) {
+    state[key] = value;
+  }
+}
+```
+
+__A Script Using the API:__
+
+```javascript
+...
+
+var script = sandcastle.createScript("\
+  exports.main = {\
+  	foo: function() {\
+  	  setState('foo', true);\
+      exit('Hello Foo!');\
+    },\
+    bar: function() {\
+  	  setState('bar', true);\
+      exit('Hello Bar!');\
+    }\,
+    hello: function() {\
+      setState('hello', true);\
+      exit('Hey ' + name + ' Hello World!');\
+    }\,
+    getStates: function() {\
+      return {\
+        foo: getState('foo'),\
+        bar: getState('bar'),\
+        hello: getState('hello')\
+      };\
+    }\
+  };\
+");
+
+script.run('main.getStates'); // { foo: undefined, bar: undefined, hello: undefined }
+script.run('main.foo');
+script.run('main.bar');
+script.run('main.hello', {name: 'Ben'});
+script.run('main.getStates'); // { foo: true, bar: true, hello: true }
 ```
 
 SandCastle will be an ongoing project, please be liberal with your feedback, criticism, and contributions.
