@@ -3,7 +3,6 @@ var equal = require('assert').equal,
   Pool = require('../lib').Pool;
 
 describe('Pool', function () {
-
   it('should run multiple scripts', function (finished) {
     var pool = new Pool({numberOfInstances: 5});
 
@@ -17,10 +16,10 @@ describe('Pool', function () {
         "
       );
       script.on('exit', function (err, result) {
-        equal(10, result);
         scriptsExited++;
         if (scriptsExited == 10) {
           pool.kill();
+          equal(10, result);
           finished();
         }
       });
@@ -49,10 +48,10 @@ describe('Pool', function () {
         "
       );
       script2.on('exit', function (err, result) {
-        equal(10, result);
         scriptsExited++;
         if (scriptsExited == 10) {
           pool.kill();
+          equal(10, result);
           exited = true;
           finished();
         }
@@ -76,5 +75,4 @@ describe('Pool', function () {
       finished();
     }
   });
-
 });
