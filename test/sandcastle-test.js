@@ -1,4 +1,5 @@
 var equal = require('assert').equal,
+  assert = require('assert'),
   notEqual = require('assert').notEqual,
   SandCastle = require('../lib').SandCastle,
   Pool = require('../lib').Pool,
@@ -55,7 +56,7 @@ describe('Sandcastle', function () {
 
     script.on('exit', function (err, result) {
       sandcastle.kill();
-      equal(err.message, 'require is not defined');
+      assert(err.message.match(/require is not defined/));
       finished();
     });
 
@@ -179,25 +180,6 @@ describe('Sandcastle', function () {
     });
 
     script.on('timeout', function (err, result) {
-      sandcastle.kill();
-      finished();
-    });
-    script.run();
-  });
-
-  it('should enforce js-strict mode', function (finished) {
-    var sandcastle = new SandCastle({useStrictMode: true});
-
-    var script = sandcastle.createScript("\
-        exports.main = function() {\n\
-          globalObjectAccidentalPollution = true; \
-          exit(0); \
-        }\n\
-      "
-    );
-
-    script.on('exit', function (err, result) {
-      notEqual(-1, err.toString().indexOf("globalObjectAccidentalPollution is not defined"));
       sandcastle.kill();
       finished();
     });
