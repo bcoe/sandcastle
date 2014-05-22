@@ -20,12 +20,13 @@
     "url": "git://github.com/bcoe/sandcastle.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha test/* --reporter spec --colors"
+    "test": "./node_modules/.bin/mocha test/* --reporter spec --colors  --timeout=5000"
   },
   "dependencies": {
     "bufferstream": ">=0.6.x",
     "optimist": "0.3.4",
-    "underscore": ">=1.4.2"
+    "underscore": ">=1.4.2",
+    "clone": "git://github.com/bcoe/node-clone#prototype-option"
   },
   "devDependencies": {
     "mocha": ">= 1.7.x"

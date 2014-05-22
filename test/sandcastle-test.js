@@ -18,8 +18,8 @@ describe('Sandcastle', function () {
     ");
 
     script.on('exit', function (err, result) {
-      equal(result.results[0], 2)
       sandcastle.kill();
+      equal(result.results[0], 2)
       finished();
     });
 
@@ -36,8 +36,8 @@ describe('Sandcastle', function () {
     ");
 
     script.on('exit', function (err, result) {
-      equal('bar', result)
       sandcastle.kill();
+      equal('bar', result)
       finished();
     });
 
@@ -54,8 +54,8 @@ describe('Sandcastle', function () {
     ");
 
     script.on('exit', function (err, result) {
-      equal(err.message, 'require is not defined');
       sandcastle.kill();
+      equal(err.message, 'require is not defined');
       finished();
     });
 
@@ -76,8 +76,8 @@ describe('Sandcastle', function () {
     ");
 
     script.on('exit', function (err, result) {
-      equal(result, 'The rain in spain falls mostly on the plain.');
       sandcastle.kill();
+      equal(result, 'The rain in spain falls mostly on the plain.');
       finished();
     });
 
@@ -98,8 +98,8 @@ describe('Sandcastle', function () {
     ", {extraAPI: "function anotherFunction(cb) { cb('The reign in spane falls mostly on the plain') }" });
 
     script.on('exit', function (err, result) {
-      equal(result, 'The reign in spane falls mostly on the plain');
       sandcastle.kill();
+      equal(result, 'The reign in spane falls mostly on the plain');
       finished();
     });
 
@@ -127,8 +127,8 @@ describe('Sandcastle', function () {
     ");
 
     safeScript.on('exit', function (err, result) {
-      equal(result, 'banana');
       sandcastle.kill();
+      equal(result, 'banana');
       finished();
     });
 
@@ -150,8 +150,8 @@ describe('Sandcastle', function () {
     );
 
     script.on('exit', function (err, result) {
-      equal(err.stack.indexOf('2:21') > -1, true);
       sandcastle.kill();
+      equal(err.stack.indexOf('2:21') > -1, true);
       finished();
     });
     script.run();
@@ -226,5 +226,4 @@ describe('Sandcastle', function () {
 
     script.run();
   });
-
 });
