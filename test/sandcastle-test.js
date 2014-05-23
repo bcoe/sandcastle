@@ -5,7 +5,7 @@ var equal = require('assert').equal,
   Pool = require('../lib').Pool,
   path = require('path');
 
-describe('Sandcastle', function () {
+describe('SandCastle', function () {
   it('should fire on("exit") when a sandboxed script calls the exit method', function (finished) {
     var sandcastle = new SandCastle();
 
