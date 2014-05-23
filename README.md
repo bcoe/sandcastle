@@ -1,6 +1,8 @@
 SandCastle
 ==========
 
+[![Build Status](https://travis-ci.org/bcoe/sandcastle.png)](https://travis-ci.org/bcoe/sandcastle)
+
 A simple and powerful sandbox for running untrusted JavaScript.
 
 The Impetus
@@ -80,7 +82,7 @@ The following options may be passed to the SandCastle constructor:
 
 Executing Scripts on Pool of SandCastles
 ----------------------
-A pool consists of several SandCastle child-processes, which will handle the script execution. Pool-object is a drop-in replacement of single Sandcastle instance. Only difference is, when creating the Pool-instance. 
+A pool consists of several SandCastle child-processes, which will handle the script execution. Pool-object is a drop-in replacement of single Sandcastle instance. Only difference is, when creating the Pool-instance.
 
 You can specify the amount of child-processes with parameter named numberOfInstances (default = 1).
 ```javascript
