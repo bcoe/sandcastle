@@ -240,7 +240,7 @@ var script = sandcastle.createScript("\
     },\
     bar: function() {\
       exit('Hello Bar!');\
-    }\,
+    },\
     hello: function() {\
       exit('Hey ' + name + ' Hello World!');\
     }\
@@ -265,16 +265,17 @@ As all functions belong to the same script you can pass objects to the __same AP
 __State API:__
 
 ```javascript
-var state = {};
-
 exports.api = {
-  getState: function(key) {
-    return state[key];
+  _state: {},
+
+  getState: function () {
+    return _state;
   },
-  setState: function(key, value) {
-    state[key] = value;
+  
+  setState: function (state) {
+    _state = state;
   }
-}
+};
 ```
 
 __A Script Using the API:__
