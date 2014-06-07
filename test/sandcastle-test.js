@@ -51,7 +51,7 @@ describe('SandCastle', function () {
     var sandcastle = new SandCastle();
 
     var script = sandcastle.createScript("\
-      exports.main = {\
+      exports = {\
         foo: function () {\
           exit(foo);\
         }\
@@ -61,10 +61,10 @@ describe('SandCastle', function () {
     script.on('exit', function (err, result, methodName) {
       sandcastle.kill();
       equal('bar', result);
-      equal('main.foo', methodName);
+      equal('foo', methodName);
       finished();
     });
-    script.run('main.foo', {foo: 'bar'});
+    script.run('foo', {foo: 'bar'});
   });
 
   it('should not allow require() to be called', function (finished) {

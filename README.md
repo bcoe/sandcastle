@@ -79,7 +79,6 @@ The following options may be passed to the SandCastle constructor:
 * `cwd` &mdash; path to the current working directory that the script will be run in (defaults to `process.cwd()`)
 
 
-
 Executing Scripts on Pool of SandCastles
 ----------------------
 A pool consists of several SandCastle child-processes, which will handle the script execution. Pool-object is a drop-in replacement of single Sandcastle instance. Only difference is, when creating the Pool-instance.
@@ -223,10 +222,10 @@ script.on('exit', function(err, result) {
 script.run();
 ```
 
-Run functions independently
+Exporting Multiple Functions
 ------------------------
 
-To call functions independently you can create a script file (which follows the module pattern) and run them separately.
+Rather than main, you create a script file that exports multiple methods.
 _Notice that one extra parameter `methodName` is available within the callback functions._
 
 ```javascript
@@ -235,7 +234,7 @@ var SandCastle = require('sandcastle').SandCastle;
 var sandcastle = new SandCastle();
 
 var script = sandcastle.createScript("\
-  exports.main = {\
+  exports = {\
   	foo: function() {\
       exit('Hello Foo!');\
     },\
@@ -253,12 +252,12 @@ script.on('timeout', function(methodName) {
 });
 
 script.on('exit', function(err, output, methodName) {
-	console.log(methodName); // main.foo, main.bar, main.hello
+	console.log(methodName); / foo, bar, hello
 });
 
-script.run('main.foo'); // Hello Foo!
-script.run('main.bar'); // Hello Bar!
-script.run('main.hello', {name: 'Ben'}); // Hey, Ben Hello World!
+script.run('foo'); // Hello Foo!
+script.run('bar'); // Hello Bar!
+script.run('hello', {name: 'Ben'}); // Hey, Ben Hello World!
 ```
 
 As all functions belong to the same script you can pass objects to the __same API instance__ and receive them later.
@@ -281,8 +280,6 @@ exports.api = {
 __A Script Using the API:__
 
 ```javascript
-...
-
 var script = sandcastle.createScript("\
   exports.main = {\
   	foo: function() {\
@@ -314,13 +311,14 @@ script.run('main.hello', {name: 'Ben'});
 script.run('main.getStates'); // { foo: true, bar: true, hello: true }
 ```
 
-SandCastle will be an ongoing project, please be liberal with your feedback, criticism, and contributions.
 
-Testing
+Contributing
 ---------
 
-Run the test suite with `npm test`.
+SandCastle will be an ongoing project, please be liberal with your feedback, criticism, and contributions.
 
+* send pull requests, for creative exploits that you find find for the SandBox. Sandboxing JavaScript is hard, it's unlikely that this library will ever be 100% bullet-proof.
+* write unit tests for your contributions!
 
 Copyright
 ---------
