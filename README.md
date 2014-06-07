@@ -79,7 +79,6 @@ The following options may be passed to the SandCastle constructor:
 * `cwd` &mdash; path to the current working directory that the script will be run in (defaults to `process.cwd()`)
 
 
-
 Executing Scripts on Pool of SandCastles
 ----------------------
 A pool consists of several SandCastle child-processes, which will handle the script execution. Pool-object is a drop-in replacement of single Sandcastle instance. Only difference is, when creating the Pool-instance.
@@ -179,7 +178,7 @@ Providing an API
 
 When creating an instance of SandCastle, you can provide an API. Functions within this API will be available inside of the untrustred scripts being executed.
 
-__AN Example of an API:__
+__An Example of an API:__
 
 ```javascript
 var fs = require('fs');
@@ -223,13 +222,104 @@ script.on('exit', function(err, result) {
 script.run();
 ```
 
-SandCastle will be an ongoing project, please be liberal with your feedback, criticism, and contributions.
+Exporting Multiple Functions
+------------------------
 
-Testing
+Rather than main, you create a script file that exports multiple methods.
+_Notice that one extra parameter `methodName` is available within the callback functions._
+
+```javascript
+var SandCastle = require('sandcastle').SandCastle;
+
+var sandcastle = new SandCastle();
+
+var script = sandcastle.createScript("\
+  exports = {\
+  	foo: function() {\
+      exit('Hello Foo!');\
+    },\
+    bar: function() {\
+      exit('Hello Bar!');\
+    },\
+    hello: function() {\
+      exit('Hey ' + name + ' Hello World!');\
+    }\
+  }\
+");
+
+script.on('timeout', function(methodName) {
+	console.log(methodName);
+});
+
+script.on('exit', function(err, output, methodName) {
+	console.log(methodName); / foo, bar, hello
+});
+
+script.run('foo'); // Hello Foo!
+script.run('bar'); // Hello Bar!
+script.run('hello', {name: 'Ben'}); // Hey, Ben Hello World!
+```
+
+As all functions belong to the same script you can pass objects to the __same API instance__ and receive them later.
+
+__State API:__
+
+```javascript
+exports.api = {
+  _state: {},
+
+  getState: function () {
+    return _state;
+  },
+  
+  setState: function (state) {
+    _state = state;
+  }
+};
+```
+
+__A Script Using the API:__
+
+```javascript
+var script = sandcastle.createScript("\
+  exports.main = {\
+  	foo: function() {\
+  	  setState('foo', true);\
+      exit('Hello Foo!');\
+    },\
+    bar: function() {\
+  	  setState('bar', true);\
+      exit('Hello Bar!');\
+    }\,
+    hello: function() {\
+      setState('hello', true);\
+      exit('Hey ' + name + ' Hello World!');\
+    }\,
+    getStates: function() {\
+      return {\
+        foo: getState('foo'),\
+        bar: getState('bar'),\
+        hello: getState('hello')\
+      };\
+    }\
+  };\
+");
+
+script.run('main.getStates'); // { foo: undefined, bar: undefined, hello: undefined }
+script.run('main.foo');
+script.run('main.bar');
+script.run('main.hello', {name: 'Ben'});
+script.run('main.getStates'); // { foo: true, bar: true, hello: true }
+```
+
+
+Contributing
 ---------
 
-Run the test suite with `npm test`.
+SandCastle will be an ongoing project, please be liberal with your feedback, criticism, and contributions.
 
+* send pull requests, for creative exploits that you find find for the SandBox. Sandboxing JavaScript is hard, it's unlikely that this library will ever be 100% bullet-proof.
+* write unit tests for your contributions!
 
 Copyright
 ---------

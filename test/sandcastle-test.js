@@ -18,9 +18,10 @@ describe('SandCastle', function () {
       }\
     ");
 
-    script.on('exit', function (err, result) {
+    script.on('exit', function (err, result, methodName) {
       sandcastle.kill();
       equal(result.results[0], 2)
+      equal('main', methodName);
       finished();
     });
 
@@ -36,13 +37,34 @@ describe('SandCastle', function () {
       }\
     ");
 
-    script.on('exit', function (err, result) {
+    script.on('exit', function (err, result, methodName) {
       sandcastle.kill();
-      equal('bar', result)
+      equal('bar', result);
+      equal('main', methodName);
       finished();
     });
 
     script.run({foo: 'bar'});
+  });
+
+  it('should run the specified function and pass global variables correctly', function (finished) {
+    var sandcastle = new SandCastle();
+
+    var script = sandcastle.createScript("\
+      exports = {\
+        foo: function () {\
+          exit(foo);\
+        }\
+      };\
+    ");
+
+    script.on('exit', function (err, result, methodName) {
+      sandcastle.kill();
+      equal('bar', result);
+      equal('foo', methodName);
+      finished();
+    });
+    script.run('foo', {foo: 'bar'});
   });
 
   it('should not allow require() to be called', function (finished) {
@@ -133,7 +155,8 @@ describe('SandCastle', function () {
       finished();
     });
 
-    loopingScript.on('timeout', function () {
+    loopingScript.on('timeout', function (methodName) {
+      equal(methodName, 'main');
       safeScript.run();
     });
 
