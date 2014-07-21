@@ -231,10 +231,12 @@ describe('SandCastle', function () {
 
     script.run();
   });
+  
   it('should allow api to see globals',function(finished){
      var sandcastle = new SandCastle({
-      api: './examples/contextObjectApi.js'
-    });
+       api: './examples/contextObjectApi.js'
+     });
+
      var script = sandcastle.createScript("\
       exports.main = function() {\n\
         var globalState = {};\n\
@@ -249,12 +251,14 @@ describe('SandCastle', function () {
           apiState:stateManager.getState()\n\
         });\n\
       }\n");
+
      script.on('exit', function(err, result) {
-      equal(result.globalState, 'none');
-      equal(result.apiState.key, 'val');
-      sandcastle.kill();
-      finished();
-    });
+        equal(result.globalState, 'none');
+        equal(result.apiState.key, 'val');
+        sandcastle.kill();
+        finished();
+     });
+
      script.run({state:{key:'val'}});
   });
 });
