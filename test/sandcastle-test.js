@@ -281,9 +281,10 @@ describe('SandCastle', function () {
       }\
     ");
 
-    script.on('task', function (err, options, methodName, callback) {
+    script.on('task', function (err, taskName, options, methodName, callback) {
         options.count++;
         
+        equal(taskName, 'test');
         equal(methodName, 'main');
 
         return callback(options);

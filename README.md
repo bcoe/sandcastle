@@ -333,7 +333,7 @@ var script = sandcastle.createScript("\
   }\
 ");
 
-script.on('task', function (err, options, methodName, callback) {
+script.on('task', function (err, taskName, options, methodName, callback) {
   if (whitelistedUrls.indexOf(options.url) !== -1) {
     http.get(options.url, function(res) {
       callback(res);
