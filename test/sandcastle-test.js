@@ -232,6 +232,36 @@ describe('SandCastle', function () {
     script.run();
   });
 
+  it('should allow api to see globals',function(finished){
+    var sandcastle = new SandCastle({
+      api: './examples/contextObjectApi.js'
+    });
+ 
+    var script = sandcastle.createScript("\
+     exports.main = function() {\n\
+       var globalState = {};\n\
+       if(typeof state === \"undefined\"){\n\
+         globalState = 'none';\n\
+       }\n\
+       else{\n\
+         globalState = state;\n\
+       }\n\
+       exit({\n\
+         globalState:globalState,\n\
+         apiState:stateManager.getState()\n\
+       });\n\
+     }\n");
+ 
+    script.on('exit', function(err, result) {
+       equal(result.globalState, 'none');
+       equal(result.apiState.key, 'val');
+       sandcastle.kill();
+       finished();
+    });
+
+    script.run({state:{key:'val'}});
+  });
+
   it('should correctly run the "test" task and and return the result', function (finished) {
     var sandcastle = new SandCastle();
 
