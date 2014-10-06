@@ -236,7 +236,7 @@ describe('SandCastle', function () {
     var sandcastle = new SandCastle({
       api: './examples/contextObjectApi.js'
     });
- 
+
     var script = sandcastle.createScript("\
      exports.main = function() {\n\
        var globalState = {};\n\
@@ -251,7 +251,7 @@ describe('SandCastle', function () {
          apiState:stateManager.getState()\n\
        });\n\
      }\n");
- 
+
     script.on('exit', function(err, result) {
        equal(result.globalState, 'none');
        equal(result.apiState.key, 'val');
@@ -283,7 +283,7 @@ describe('SandCastle', function () {
 
     script.on('task', function (err, taskName, options, methodName, callback) {
         options.count++;
-        
+
         equal(taskName, 'test');
         equal(methodName, 'main');
 
