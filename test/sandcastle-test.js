@@ -20,7 +20,7 @@ describe('SandCastle', function () {
 
     script.on('exit', function (err, result, methodName) {
       sandcastle.kill();
-      equal(result.results[0], 2)
+      equal(result.results[0], 2);
       equal('main', methodName);
       finished();
     });
@@ -231,34 +231,71 @@ describe('SandCastle', function () {
 
     script.run();
   });
-  
+
   it('should allow api to see globals',function(finished){
-     var sandcastle = new SandCastle({
-       api: './examples/contextObjectApi.js'
-     });
+    var sandcastle = new SandCastle({
+      api: './examples/contextObjectApi.js'
+    });
+ 
+    var script = sandcastle.createScript("\
+     exports.main = function() {\n\
+       var globalState = {};\n\
+       if(typeof state === \"undefined\"){\n\
+         globalState = 'none';\n\
+       }\n\
+       else{\n\
+         globalState = state;\n\
+       }\n\
+       exit({\n\
+         globalState:globalState,\n\
+         apiState:stateManager.getState()\n\
+       });\n\
+     }\n");
+ 
+    script.on('exit', function(err, result) {
+       equal(result.globalState, 'none');
+       equal(result.apiState.key, 'val');
+       sandcastle.kill();
+       finished();
+    });
 
-     var script = sandcastle.createScript("\
-      exports.main = function() {\n\
-        var globalState = {};\n\
-        if(typeof state === \"undefined\"){\n\
-          globalState = 'none';\n\
-        }\n\
-        else{\n\
-          globalState = state;\n\
-        }\n\
-        exit({\n\
-          globalState:globalState,\n\
-          apiState:stateManager.getState()\n\
-        });\n\
-      }\n");
+    script.run({state:{key:'val'}});
+  });
 
-     script.on('exit', function(err, result) {
-        equal(result.globalState, 'none');
-        equal(result.apiState.key, 'val');
-        sandcastle.kill();
-        finished();
-     });
+  it('should correctly run the "test" task and and return the result', function (finished) {
+    var sandcastle = new SandCastle();
 
-     script.run({state:{key:'val'}});
+    var script = sandcastle.createScript("\
+      exports = {\
+        onTestTask: function (data) {\
+          if (data.count > 1) {\
+            exit(data);\
+          }\
+          else {\
+            runTask('test', data);\
+          }\
+        },\
+        main: function() {\
+          runTask('test', {count: 0});\
+        }\
+      }\
+    ");
+
+    script.on('task', function (err, taskName, options, methodName, callback) {
+        options.count++;
+        
+        equal(taskName, 'test');
+        equal(methodName, 'main');
+
+        return callback(options);
+    });
+
+    script.on('exit', function (err, result) {
+      equal(result.count, 2);
+      sandcastle.kill();
+      finished();
+    });
+
+    script.run();
   });
 });

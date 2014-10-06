@@ -77,6 +77,8 @@ The following options may be passed to the SandCastle constructor:
 * `useStrictMode` &mdash; boolean; when true script runs in strict mode (defaults to false)
 * `api` &mdash; path to file that defines the API accessible to script
 * `cwd` &mdash; path to the current working directory that the script will be run in (defaults to `process.cwd()`)
+* `spawnExecPath` &mdash; path to a external node binary to run the sandbox with. (defaults to `process.execPath`) _This is a [temporary workaround](https://github.com/rogerwang/node-webkit/issues/213) which allows you to run the sandbox within [node-webkit](https://github.com/rogerwang/node-webkit)_
+* `refreshTimeoutOnTask` &mdash; boolean; refreshes the timeout whenever an answer to a task will be sent to the script
 
 
 Executing Scripts on Pool of SandCastles
@@ -312,6 +314,37 @@ script.run('main.hello', {name: 'Ben'});
 script.run('main.getStates'); // { foo: true, bar: true, hello: true }
 ```
 
+Providing Tasks
+------------------------
+
+In constrast to the [API](#providing-an-api) which runs trusted code __inside__ the sandbox the script can ask to do a specific task and get the result back.
+
+To run a task call `runTask(taskName, options = {})` and provide a `onTask(taskName, data)` method within the script file. Alternatively you can create a task specific function `on{TaskName}Task` to receive data for an individual task.
+
+```javascript
+var script = sandcastle.createScript("\
+  exports = {\
+    onGetContentTask: function (data) {\
+      // received content. do something here...
+    },\
+    main: function() {\
+      runTask('getContent', {url: 'http://foo.bar'});\
+    }\
+  }\
+");
+
+script.on('task', function (err, taskName, options, methodName, callback) {
+  if (whitelistedUrls.indexOf(options.url) !== -1) {
+    http.get(options.url, function(res) {
+      callback(res);
+    }).on('error', function(e) {
+      callback(null);
+    });
+  }
+});
+```
+
+By default the timeout gets refreshed every time a answer will be send to the script but you can fallback to the old behaviour by setting the `refreshTimeoutOnTask` option to `false`.
 
 Contributing
 ---------

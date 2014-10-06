@@ -4,3 +4,5 @@ test.sh
 test.js
 nohup.out
 out.txt
+
+/coverage.html

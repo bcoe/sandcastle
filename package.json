@@ -20,15 +20,23 @@
     "url": "git://github.com/bcoe/sandcastle.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha test/* --reporter spec --colors  --timeout=5000"
+    "coverage": "./node_modules/.bin/mocha test/* --require blanket --colors --timeout=10000 -R html-cov > coverage.html",
+    "test": "./node_modules/.bin/mocha test/* --require blanket --colors --timeout=10000 -R spec"
+  },
+  "config": {
+    "blanket": {
+      "pattern": "//lib//",
+      "data-cover-never": "node_modules"
+    }
   },
   "dependencies": {
     "bufferstream": ">=0.6.x",
+    "clone": "git://github.com/bcoe/node-clone#prototype-option",
     "optimist": "0.3.4",
-    "underscore": ">=1.4.2",
-    "clone": "git://github.com/bcoe/node-clone#prototype-option"
+    "underscore": ">=1.4.2"
   },
   "devDependencies": {
+    "blanket": "^1.1.6",
     "mocha": ">= 1.7.x"
   }
 }
