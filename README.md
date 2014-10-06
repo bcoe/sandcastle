@@ -273,7 +273,7 @@ exports.api = {
   getState: function () {
     return _state;
   },
-  
+
   setState: function (state) {
     _state = state;
   }
@@ -317,9 +317,9 @@ script.run('main.getStates'); // { foo: true, bar: true, hello: true }
 Providing Tasks
 ------------------------
 
-In constrast to the [API](#providing-an-api) which runs trusted code __inside__ the sandbox the script can ask to do a specific task and get the result back.
+In contrast to the [API](#providing-an-api) which runs trusted code __inside__ the sandbox, the script can request that a task (a snippet of code) is executed in another process.
 
-To run a task call `runTask(taskName, options = {})` and provide a `onTask(taskName, data)` method within the script file. Alternatively you can create a task specific function `on{TaskName}Task` to receive data for an individual task.
+To run a task call `runTask(taskName, options = {})` and provide a `onTask(taskName, data)` method within the script file. Alternatively you can create a task specific function `on{TaskName}Task`, to receive data for an individual task.
 
 ```javascript
 var script = sandcastle.createScript("\
@@ -344,7 +344,7 @@ script.on('task', function (err, taskName, options, methodName, callback) {
 });
 ```
 
-By default the timeout gets refreshed every time a answer will be send to the script but you can fallback to the old behaviour by setting the `refreshTimeoutOnTask` option to `false`.
+`refreshTimeoutOnTask` can be used to control the timeout behavior of the script executing the task. If set to true, the script will have its timeout reset when the task is completed.
 
 Contributing
 ---------
