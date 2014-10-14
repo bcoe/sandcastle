@@ -84,6 +84,24 @@ describe('SandCastle', function () {
 
     script.run();
   });
+  
+  it('should able to exit(null)', function (finished) {
+    var sandcastle = new SandCastle();
+
+    var script = sandcastle.createScript("\
+      exports.main = function() {\
+        exit(null);\
+      }\
+    ");
+
+    script.on('exit', function (err, result) {
+      sandcastle.kill();
+	  equal(result,null);
+      finished();
+    });
+
+    script.run();
+  });
 
   it('should provide an API', function (finished) {
     var sandcastle = new SandCastle({
