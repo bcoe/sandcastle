@@ -10,6 +10,7 @@ var script = sandcastle.createScript("\
 
 script.on('exit', function(err, output) {
     console.log(output); // Hello World!
+    process.exit(0);
 });
 
 script.run();

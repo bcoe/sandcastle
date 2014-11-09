@@ -21,7 +21,7 @@ var script2 = poolOfSandcastles.createScript("\
 ");
 
 script2.on('exit', function(err, output) {
-    console.log(output);
+  console.log(output);
 });
 
 script.run();

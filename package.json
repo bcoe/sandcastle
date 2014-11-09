@@ -30,10 +30,10 @@
     }
   },
   "dependencies": {
-    "bufferstream": ">=0.6.x",
-    "clone": "git://github.com/bcoe/node-clone#prototype-option",
-    "optimist": "0.3.4",
-    "underscore": ">=1.4.2"
+    "bufferstream": "^0.6.2",
+    "clone": "^0.1.18",
+    "optimist": "^0.3.4",
+    "underscore": "^1.7.0"
   },
   "devDependencies": {
     "blanket": "^1.1.6",
