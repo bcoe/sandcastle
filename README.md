@@ -257,9 +257,13 @@ script.on('exit', function(err, output, methodName) {
 	console.log(methodName); / foo, bar, hello
 });
 
-script.run('foo'); // Hello Foo!
-script.run('bar'); // Hello Bar!
-script.run('hello', {name: 'Ben'}); // Hey, Ben Hello World!
+// take note that a single script should only be
+// executing a single method at a time.
+var cb = null;
+async.eachLimit(['foo', 'bar', 'hello'], 1, function(item, _cb) {
+  cb = _cb;
+  script.run(item, {name: 'Ben'});
+});
 ```
 
 Providing Tasks

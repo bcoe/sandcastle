@@ -1,6 +1,6 @@
-var SandCastle = require('../lib').SandCastle;
-
-var sandcastle = new SandCastle();
+var async = require('async'),
+  SandCastle = require('../lib').SandCastle,
+  sandcastle = new SandCastle();
 
 var script = sandcastle.createScript("\
   exports = {\
@@ -22,8 +22,12 @@ script.on('timeout', function(methodName) {
 
 script.on('exit', function(err, output, methodName) {
   console.log(methodName, output); // foo, bar, hello
+  return cb();
 });
 
-script.run('foo'); // Hello Foo!
-script.run('bar'); // Hello Bar!
-script.run('hello', {name: 'Ben'}); // Hey, Ben Hello World!
+var cb = null;
+
+async.eachLimit(['foo', 'bar', 'hello'], 1, function(item, _cb) {
+  cb = _cb;
+  script.run(item, {name: 'Ben'});
+});
