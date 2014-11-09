@@ -257,61 +257,13 @@ script.on('exit', function(err, output, methodName) {
 	console.log(methodName); / foo, bar, hello
 });
 
-script.run('foo'); // Hello Foo!
-script.run('bar'); // Hello Bar!
-script.run('hello', {name: 'Ben'}); // Hey, Ben Hello World!
-```
-
-As all functions belong to the same script you can pass objects to the __same API instance__ and receive them later.
-
-__State API:__
-
-```javascript
-exports.api = {
-  _state: {},
-
-  getState: function () {
-    return _state;
-  },
-
-  setState: function (state) {
-    _state = state;
-  }
-};
-```
-
-__A Script Using the API:__
-
-```javascript
-var script = sandcastle.createScript("\
-  exports.main = {\
-  	foo: function() {\
-  	  setState('foo', true);\
-      exit('Hello Foo!');\
-    },\
-    bar: function() {\
-  	  setState('bar', true);\
-      exit('Hello Bar!');\
-    }\,
-    hello: function() {\
-      setState('hello', true);\
-      exit('Hey ' + name + ' Hello World!');\
-    }\,
-    getStates: function() {\
-      return {\
-        foo: getState('foo'),\
-        bar: getState('bar'),\
-        hello: getState('hello')\
-      };\
-    }\
-  };\
-");
-
-script.run('main.getStates'); // { foo: undefined, bar: undefined, hello: undefined }
-script.run('main.foo');
-script.run('main.bar');
-script.run('main.hello', {name: 'Ben'});
-script.run('main.getStates'); // { foo: true, bar: true, hello: true }
+// take note that a single script should only be
+// executing a single method at a time.
+var cb = null;
+async.eachLimit(['foo', 'bar', 'hello'], 1, function(item, _cb) {
+  cb = _cb;
+  script.run(item, {name: 'Ben'});
+});
 ```
 
 Providing Tasks

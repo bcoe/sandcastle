@@ -84,7 +84,7 @@ describe('SandCastle', function () {
 
     script.run();
   });
-  
+
   it('should able to exit(null)', function (finished) {
     var sandcastle = new SandCastle();
 
@@ -119,6 +119,33 @@ describe('SandCastle', function () {
     script.on('exit', function (err, result) {
       sandcastle.kill();
       equal(result, 'The rain in spain falls mostly on the plain.');
+      finished();
+    });
+
+    script.run();
+  });
+
+  it('should allow API to be passed in as string', function(finished) {
+    var sandcastle = new SandCastle({
+      api: "_ = require('lodash');\
+        exports.api = {\
+          map: function(values, cb) {\
+            return _.map(values, cb);\
+          }\
+      }"
+    });
+
+    var script = sandcastle.createScript("\
+      exports.main = function() {\
+        exit(map([{a: 1}, {a: 2}, {a: 3}], function(obj) {\
+          return obj.a;\
+        }))\
+      }\
+    ");
+
+    script.on('exit', function (err, result) {
+      sandcastle.kill();
+      equal(JSON.stringify(result), JSON.stringify([1, 2, 3]));
       finished();
     });
 
