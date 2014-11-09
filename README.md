@@ -224,6 +224,44 @@ script.on('exit', function(err, result) {
 script.run();
 ```
 
+Exporting Multiple Functions
+------------------------
+
+Rather than main, you create a script file that exports multiple methods.
+_Notice that one extra parameter `methodName` is available within the callback functions._
+
+```javascript
+var SandCastle = require('sandcastle').SandCastle;
+
+var sandcastle = new SandCastle();
+
+var script = sandcastle.createScript("\
+  exports = {\
+  	foo: function() {\
+      exit('Hello Foo!');\
+    },\
+    bar: function() {\
+      exit('Hello Bar!');\
+    },\
+    hello: function() {\
+      exit('Hey ' + name + ' Hello World!');\
+    }\
+  }\
+");
+
+script.on('timeout', function(methodName) {
+	console.log(methodName);
+});
+
+script.on('exit', function(err, output, methodName) {
+	console.log(methodName); / foo, bar, hello
+});
+
+script.run('foo'); // Hello Foo!
+script.run('bar'); // Hello Bar!
+script.run('hello', {name: 'Ben'}); // Hey, Ben Hello World!
+```
+
 Providing Tasks
 ------------------------
 

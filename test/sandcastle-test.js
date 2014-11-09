@@ -67,6 +67,35 @@ describe('SandCastle', function () {
     script.run('foo', {foo: 'bar'});
   });
 
+  it('if two functions are run in the same tick, both should exit', function (finished) {
+    var sandcastle = new SandCastle(),
+      methodsCalled = [];
+
+    var script = sandcastle.createScript("\
+      exports = {\
+        foo: function () {\
+          exit(foo);\
+        },\
+        bar: function () {\
+          exit(bar);\
+        }\
+      };\
+    ");
+
+    script.on('exit', function (err, result, methodName) {
+      methodsCalled.push(methodName);
+      if (methodsCalled.length === 2) {
+        assert(methodsCalled.indexOf('foo') >= 0);
+        assert(methodsCalled.indexOf('bar') >= 0);
+        sandcastle.kill();
+        return finished();
+      }
+    });
+
+    script.run('foo', {foo: 'bar', bar: 'foo'});
+    script.run('bar', {foo: 'bar', bar: 'foo'});
+  });
+
   it('should not allow require() to be called', function (finished) {
     var sandcastle = new SandCastle();
 
