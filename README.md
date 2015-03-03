@@ -298,6 +298,10 @@ script.on('task', function (err, taskName, options, methodName, callback) {
 
 `refreshTimeoutOnTask` can be used to control the timeout behavior of the script executing the task. If set to true, the script will have its timeout reset when the task is completed.
 
+Debugging
+---------
+Make debugging a little easier by ensuring the DEBUG environment variable includes `sandcastle`.
+
 Contributing
 ---------
 

@@ -36,6 +36,7 @@
   "dependencies": {
     "bufferstream": "^0.6.2",
     "clone": "^0.1.18",
+    "debug": "^2.1.2",
     "lodash": "^2.4.1",
     "optimist": "^0.3.4"
   },
