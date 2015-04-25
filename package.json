@@ -21,7 +21,7 @@
   },
   "scripts": {
     "coverage": "./node_modules/.bin/mocha test/* --require blanket --colors --timeout=10000 -R html-cov > coverage.html",
-    "test": "mocha --timeout=10000 --check-leaks --ui exports --require blanket -R mocoverage"
+    "test": "mocha --timeout=10000 --check-leaks --ui exports --require patched-blanket -R mocoverage"
   },
   "config": {
     "blanket": {
@@ -42,8 +42,8 @@
   },
   "devDependencies": {
     "async": "^0.9.0",
-    "blanket": "^1.1.6",
     "mocha": "2.1.0",
-    "mocoverage": "^1.0.0"
+    "mocoverage": "^1.0.0",
+    "patched-blanket": "^1.0.1"
   }
 }
