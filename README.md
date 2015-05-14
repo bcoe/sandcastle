@@ -254,7 +254,7 @@ script.on('timeout', function(methodName) {
 });
 
 script.on('exit', function(err, output, methodName) {
-	console.log(methodName); / foo, bar, hello
+	console.log(methodName); // foo, bar, hello
 });
 
 // take note that a single script should only be
