@@ -1,18 +1,23 @@
 #!/usr/bin/env node
 
 var sandcastle = require('../lib'),
-  argv = require('optimist').argv,
+  yargs = require('yargs')
+    .usage('Usage sandcastle <command>')
+    .command('sandbox', 'start a sandbox server')
+    .option('socket', {
+      alias: 's',
+      describe: 'path to socket file',
+      default: '/tmp/sandcastle.sock'
+    }),
+  argv = yargs.argv,
   mode = argv._.shift();
 
 switch (mode) {
   case 'sandbox':
     (new sandcastle.Sandbox({
-        socket: (argv.socket || '/tmp/sandcastle.sock')
+        socket: argv.socket
     })).start();
     break;
   default:
-    console.log('Usage sandcastle <command>\n\n\
-      \t<sandbox>\tstart a sandbox server\n\
-      \t\t--socket=[path to socket file]\n\
-    ')
+    yargs.showHelp()
 }

@@ -229,7 +229,7 @@ describe('SandCastle', function () {
   it('should enforce memory limit', function (finished) {
     this.timeout(10000);
 
-    var sandcastle = new SandCastle({memoryLimitMB: 10});
+    var sandcastle = new SandCastle({memoryLimitMB: 1});
 
     var script = sandcastle.createScript("\
         exports.main = function() {\n\

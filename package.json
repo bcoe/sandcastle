@@ -35,14 +35,14 @@
   },
   "dependencies": {
     "bufferstream": "^0.6.2",
-    "clone": "^0.1.18",
+    "clone": "^1.0.2",
     "debug": "^2.1.2",
-    "lodash": "^2.4.1",
-    "optimist": "^0.3.4"
+    "lodash": "^3.10.1",
+    "yargs": "^3.30.0"
   },
   "devDependencies": {
-    "async": "^0.9.0",
-    "mocha": "2.1.0",
+    "async": "^1.5.0",
+    "mocha": "^2.3.3",
     "mocoverage": "^1.0.0",
     "patched-blanket": "^1.0.1"
   }
