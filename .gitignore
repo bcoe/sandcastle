@@ -4,5 +4,7 @@ test.sh
 test.js
 nohup.out
 out.txt
+.idea
+*.iml
 
 /coverage.html

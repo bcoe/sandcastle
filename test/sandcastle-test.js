@@ -255,7 +255,7 @@ describe('SandCastle', function () {
   });
 
   it('sets cwd, when running scripts', function(finished) {
-    var cwd = process.cwd() + '/test';
+    var cwd = process.cwd() + path.sep + 'test';
 
     var sandcastle = new SandCastle({
       api: '../examples/api.js',

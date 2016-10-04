@@ -7,7 +7,7 @@ var sandcastle = require('../lib'),
 switch (mode) {
   case 'sandbox':
     (new sandcastle.Sandbox({
-        socket: (argv.socket || '/tmp/sandcastle.sock')
+        socket: (argv.socket || socketName())
     })).start();
     break;
   default:
