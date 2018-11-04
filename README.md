@@ -26,6 +26,7 @@ What Makes SandCastle Different?
 * It provides reasonable stack traces when the execution of a sandboxed script fails.
 * It allows an API to be provided to the sandboxed script being executed.
 * It provides all this in a simple, well-tested, API.
+* Now Uses a Memory Mapped File (mmap) to increase performance for large scripts.
 
 Installation
 ------------
@@ -79,6 +80,7 @@ The following options may be passed to the SandCastle constructor:
 * `cwd` &mdash; path to the current working directory that the script will be run in (defaults to `process.cwd()`)
 * `spawnExecPath` &mdash; path to a external node binary to run the sandbox with. (defaults to `process.execPath`) _This is a [temporary workaround](https://github.com/rogerwang/node-webkit/issues/213) which allows you to run the sandbox within [node-webkit](https://github.com/rogerwang/node-webkit)_
 * `refreshTimeoutOnTask` &mdash; boolean; refreshes the timeout whenever an answer to a task will be sent to the script
+* `sharedFileID` &mdash; string; suffix (shared-sharedFileID) to the mmap file temporarily saved to your /tmp folder
 
 
 Executing Scripts on Pool of SandCastles
