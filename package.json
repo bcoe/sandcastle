@@ -20,31 +20,18 @@
     "url": "git://github.com/bcoe/sandcastle.git"
   },
   "scripts": {
-    "coverage": "./node_modules/.bin/mocha test/* --require blanket --colors --timeout=10000 -R html-cov > coverage.html",
-    "test": "mocha --timeout=10000 --check-leaks --ui exports --require patched-blanket -R mocoverage"
-  },
-  "config": {
-    "blanket": {
-      "pattern": "lib",
-      "data-cover-never": [
-        "node_modules",
-        "test"
-      ],
-      "output-reporter": "spec"
-    }
+    "test": "mocha --timeout=10000 --check-leaks"
   },
   "dependencies": {
     "bufferstream": "^0.6.2",
     "clone": "^2.1.1",
     "debug": "^3.1.0",
-    "lodash": "^4.17.4",
     "yargs": "^10.0.3",
-    "mongodb-extended-json": "^1.10.0"
+    "mongodb-extended-json": "^1.10.0",
+    "mmap-object": "1.4.1"
   },
   "devDependencies": {
     "async": "^2.5.0",
-    "mocha": "^3.5.3",
-    "mocoverage": "^1.0.0",
-    "patched-blanket": "^1.0.1"
+    "mocha": "^3.5.3"
   }
 }
