@@ -195,8 +195,8 @@ describe('SandCastle', function () {
     ");
 
     safeScript.on('exit', function (err, result) {
-      sandcastle.kill();
       equal(result, 'banana');
+      sandcastle.kill();
       finished();
     });
 
